@@ -27,7 +27,7 @@ include 'db.php';
             <li><a href="">Our Team</a></li>
             <li><a href="">Contact</a></li>
         </ul>
-        <button>Login <i class="fa-regular fa-user"></i></button>
+        <button onclick="window.location.href='login.php'">Login <i class="fa-regular fa-user"></i></button>
     </div>
 
     <!-- banner -->
@@ -59,16 +59,15 @@ include 'db.php';
         ?>
         <!-- categories -->
         <div class="categories-list">
+             <div class="categories" data-category="all">
+                <p><i class="fa-solid fa-list"></i>All</p>
+            </div>
             <?php while($row = mysqli_fetch_assoc($query)) { ?>
             <!-- categories -->
-            <div class="categories">
-                
-                <img src="category/<?php echo $row['category_image'] ?>" alt="" class="category-img">
-                <p>
-                    <?php echo $row['category_name']?>
-                </p>
-                 
-            </div>
+                <div class="categories" data-category="<?php echo $row['category_name']; ?>">
+                    <img src="category/<?php echo $row['category_image'] ?>" alt="" class="category-img">
+                    <p><?php echo $row['category_name'] ?></p>
+                </div>
             <?php } ?>
         </div>
         <?php
@@ -80,9 +79,8 @@ include 'db.php';
         <div class="projects-list">
             <?php while($row = mysqli_fetch_assoc($query)) { ?>
                 
-                <div class="project">
-                    <img src="produk/<?php echo $row['product_image']; ?>" 
-                        alt="" class="product-img">
+                <div class="project" data-product="<?php echo $row['category_name']; ?>">
+                    <img src="produk/<?php echo $row['product_image']; ?>" alt="" class="product-img">
 
                     <div class="desc">
                         <h3 class="categories-name">
@@ -108,6 +106,79 @@ include 'db.php';
             <?php } ?>
         </div>
     </div>
-    
+
+     <!-- footer -->
+    <div class="footer">
+        <div class="content-footer">
+            <div class="frame-one">
+                <img src="img/logo-text-white.png" alt="" style="width: 200px;">
+                <p>TriNova Tech adalah mitra teknologi terpecaya untuk membantu bisnis tumbuh dan berenovasi di era digital</p>
+                <div class="logomeds">
+                    <i class="fa-brands fa-facebook"></i>
+                    <i class="fa-brands fa-linkedin-in"></i>
+                    <i class="fa-brands fa-instagram"></i>
+                </div>
+            </div>
+            <div class="frame-list">
+                <div class="list">
+                    <h4>Quick Links</h4>
+                    <div class="list-menu">
+                        <a href="">Home</a>
+                        <a href="">About</a>
+                        <a href="">Services</a>
+                        <a href="">Products</a>
+                        <a href="">Our Team</a>
+                        <a href="">Contact</a>
+                    </div>
+                </div>
+                <div class="list">
+                    <h4>Our Services</h4>
+                    <div class="list-menu">
+                        <a href="">Mobile App Developement</a>
+                        <a href="">Software Developement</a>
+                        <a href="">Cloud Solution</a>
+                        <a href="">Products</a>
+                        <a href="">IT Security</a>
+                    </div>
+                </div>
+                <div class="list">
+                    <h4>Contact Us</h4>
+                    <div class="list-menu">
+                        <a href=""><i class="fa-solid fa-location-dot"></i>jl. Panglima Batur</a>
+                        <a href=""><i class="fa-solid fa-phone"></i>+62 821 5889 1284</a>
+                        <a href=""><i class="fa-solid fa-envelope"></i>info@trinovatech.com</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <hr>
+        <div class="new">
+            <div class="oneo">
+                <p style="color: white;">© 2026 TriNova Tech. All Right reserved. </p>
+            </div>
+            <div class="twot">
+                <p style="color: white;">Privacy Policy</p>
+                <p style="color: white;">Terms of Services</p>
+            </div>
+        </div>
+    </div>
+        <script>
+        const categories = document.querySelectorAll('.categories');
+        const projects = document.querySelectorAll('.project');
+
+        categories.forEach(category => {
+            category.addEventListener('click', () => {
+                const selectedCategory = category.dataset.category;
+
+                projects.forEach(project => {
+                    if(selectedCategory === 'all' || project.dataset.product === selectedCategory){
+                        project.style.display = 'block';
+                    } else {
+                        project.style.display = 'none';
+                    }
+                });
+            });
+        });
+        </script>
 </body>
 </html>

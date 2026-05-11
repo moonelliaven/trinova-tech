@@ -1,4 +1,10 @@
-<?php include ('session.php');?>
+<?php
+session_start();
+include '../db.php';
+
+$query = mysqli_query($conn, "SELECT * FROM tb_admin WHERE admin_id = '".$_SESSION['id_login']."'");
+$d = mysqli_fetch_object($query);
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,15 +12,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Warung X RPL | Kategori Tambah</title>
     <link rel="stylesheet" type="text/css" href="../css/styleadmin.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
     <div class="wrapper">
-        <div class="header"></div>
+        <header>
+            <div class="part">
+                <i class="fa-solid fa-bars"></i>
+                <h3>Dashboard</h3>
+            </div>
+            <div class="part" onclick="window.location='profile.php'">
+                <div class="profile-img"><i class="fa-regular fa-circle-user"></i></div>
+                <div class="prof-desc">
+                    <h3><?php echo $d->nama ?></h3>
+                    <p><?php echo $d->level ?></p>
+                </div>
+                <i class="fa-solid fa-chevron-down"></i>
+            </div>
+        </header>
 
         <div class="sidebar">
-            <div class="sidebar-title"><b>Nusa Voyager Company</b></div>
+            <div class="sidebar-title">
+                <img src="../img/logo-text-white.png" alt="">
+            </div>
             <ul>
-                <?php include 'sidebar.php' ?>
+                <?php include 'sidebar.php'; ?>
             </ul>
         </div>
 

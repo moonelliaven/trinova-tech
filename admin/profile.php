@@ -1,4 +1,10 @@
-<?php include 'session.php' ?>
+<?php
+session_start();
+include '../db.php';
+
+$query = mysqli_query($conn, "SELECT * FROM tb_admin WHERE admin_id = '".$_SESSION['id_login']."'");
+$d = mysqli_fetch_object($query);
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,29 +12,43 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Halaman profile</title>
     <link rel="stylesheet" type="text/css" href="../css/styleadmin.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
     <div class="wrapper">
-        <div class="header"></div>
-        <div class="sidebar">
-            <div class="sidebar-title"><b>Nusa Voyager Company</b></div>
-                <ul>
-                    <?php include 'sidebar.php' ?>
-                </ul>
+        <header>
+            <div class="part">
+                <i class="fa-solid fa-bars"></i>
+                <h3>Dashboard</h3>
             </div>
-        </div>  
+            <div class="part" onclick="window.location='profile.php'">
+                <div class="profile-img"><i class="fa-regular fa-circle-user"></i></div>
+                <div class="prof-desc">
+                    <h3><?php echo $d->nama ?></h3>
+                    <p><?php echo $d->level ?></p>
+                </div>
+                <i class="fa-solid fa-chevron-down"></i>
+            </div>
+        </header>
+        <div class="sidebar">
+            <div class="sidebar-title">
+                <img src="../img/logo-text-white.png" alt="">
+            </div>
+            <ul>
+                <?php include 'sidebar.php'; ?>
+            </ul>
+        </div>
 
         <div class="section">
-            <div class="container">
+                <h1>Pengaturan Profil</h1>
+            <div class="container form">
                 <?php
                 $query = mysqli_query($conn, "SELECT * FROM tb_admin WHERE admin_id = '".$_SESSION['id_login']."' ");
                 $d = mysqli_fetch_object($query);
                 ?>
                 
-                <h1>Pengaturan Profil</h1>
-                
                 <form id="form-profil" method="post">
-                    <h3>📋 Data Profil</h3>
+                    <h3>Data Profil</h3>
                     <fieldset>
                         <label>Nama Lengkap</label>
                         <input type="text" name="nama" placeholder="Nama Lengkap" value="<?php echo $d->nama ?>" required>
@@ -50,7 +70,7 @@
                         <input type="text" name="alamat" placeholder="Alamat" value="<?php echo $d->alamat ?>" required>
                     </fieldset>
                     <fieldset>
-                        <button name="submit" type="submit">💾 Simpan Perubahan</button>
+                        <button name="submit" type="submit">Simpan Perubahan</button>
                     </fieldset>
                 </form>
                 <?php 
@@ -81,7 +101,7 @@
                         $d = mysqli_fetch_object($query);
                     ?>
                     <form id="form-password" method="post">
-                      <h3>🔐 Ubah Password</h3>  
+                      <h3>Ubah Password</h3>  
                       <fieldset>
                         <label>Password Baru</label>
                         <input type="password" name="pass1" placeholder="Password Baru" required>
@@ -91,7 +111,7 @@
                         <input type="password" name="pass2" placeholder="Konfirmasi Password Baru" required>
                       </fieldset>
                       <fieldset>
-                        <button name="ubah_password" type="submit">🔄 Ubah Password</button>
+                        <button name="ubah_password" type="submit">Ubah Password</button>
                       </fieldset>
                     </form>
                     <?php

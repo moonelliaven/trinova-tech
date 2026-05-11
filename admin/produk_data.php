@@ -1,4 +1,10 @@
-<?php include ('session.php');?>
+<?php
+session_start();
+include '../db.php';
+
+$query = mysqli_query($conn, "SELECT * FROM tb_admin WHERE admin_id = '".$_SESSION['id_login']."'");
+$d = mysqli_fetch_object($query);
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,22 +12,63 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <title>Halaman Produk Data | Nusa Voyager</title>
     <link rel="stylesheet" type="text/css" href="../css/styleadmin.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
 <body>
     <div class="wrapper">
-        <div class="header"></div>
-
+        <header>
+            <div class="part">
+                <i class="fa-solid fa-bars"></i>
+                <h3>Dashboard</h3>
+            </div>
+            <div class="part" onclick="window.location='profile.php'">
+                <div class="profile-img"><i class="fa-regular fa-circle-user"></i></div>
+                <div class="prof-desc">
+                    <h3><?php echo $d->nama ?></h3>
+                    <p><?php echo $d->level ?></p>
+                </div>
+                <i class="fa-solid fa-chevron-down"></i>
+            </div>
+        </header>
         <div class="sidebar">
-            <div class="sidebar-title"><b>Nusa Voyager Company</b></div>
+            <div class="sidebar-title">
+                <img src="../img/logo-text-white.png" alt="">
+            </div>
             <ul>
-                <?php include 'sidebar.php' ?>
+                <?php include 'sidebar.php'; ?>
             </ul>
         </div>
 
         <div class="section">
             <div class="container">
-                <h5 class="card-title">Produk</h5>
-                <p><a href="produk_tambah.php">Tambah produk</a></p>
+                <div class="sect-top">
+                    <div class="title">
+                        <h1 class=>Project</h1>
+                        <p>Kelola semua projek yang tersedia</p>
+                    </div>
+                    <button class="cta" onclick="window.location='produk_tambah.php'"><i class="fa-solid fa-plus"></i>Tambah Data</button>
+                </div>
+                <div class="table2">
+                    <div class="sect-bottom">
+                        <div class="input-sect-2">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                            <input class="search" type="text" placeholder="Cari Projek...">
+                        </div>
+                        <div class="filter">
+                            <i class="fa-solid fa-filter"></i>
+                            <label for="">Nama kategori</label>
+                            <select name="kategori" class="form-control" id="" required>
+                                <option value="">All</option>
+                                <!-- input database -->
+                                <?php
+                                    $kategori = mysqli_query($conn, "SELECT * FROM tb_category ORDER BY category_id DESC");
+                                    while($r = mysqli_fetch_array($kategori)){
+                                ?>
+                                    <option value="<?php echo $r['category_id'] ?>"><?php echo $r['category_name'] ?></option>
+                                <?php } ?>
+                            </select>
+                        </div>
+                    </div>
                 <table class="table1" width="80%">
                     <!-- list nama table -->
                     <tr>
@@ -66,6 +113,7 @@
                     </tr>
                     <?php } ?>
                 </table>
+                </div>
             </div>
         </div>
 
